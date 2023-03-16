@@ -11,7 +11,9 @@
     "publish-clean": "rimraf ../web/src/salut-lib && rimraf ../app/salut-lib"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.12",
     "mobx": "^6.8.0",
+    "mobx-persist-store": "^1.1.3",
     "mobx-react-lite": "^3.4.3",
     "react": "^17.0.2",
     "react-native": "^0.67.5"
