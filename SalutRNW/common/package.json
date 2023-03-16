@@ -7,9 +7,12 @@
     "build": "rimraf dist && tsc",
     "publish-web": "rimraf ../web/src/salut-lib && mkdir ../web/src/salut-lib && cp -R dist ../web/src/salut-lib",
     "publish-app": "rimraf ../app/salut-lib && mkdir ../app/salut-lib && cp -R dist ../app/salut-lib",
-    "publish-all": "yarn run publish-web && yarn run publish-app"
+    "publish-all": "yarn run publish-web && yarn run publish-app",
+    "publish-clean": "rimraf ../web/src/salut-lib && rimraf ../app/salut-lib"
   },
   "dependencies": {
+    "mobx": "^6.8.0",
+    "mobx-react-lite": "^3.4.3",
     "react": "^17.0.2",
     "react-native": "^0.67.5"
   },
