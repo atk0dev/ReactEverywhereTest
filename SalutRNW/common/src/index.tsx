@@ -5,13 +5,18 @@ import { Router } from './Router';
 import { Card } from './components/Card';
 
 export const App = () => {
+
+  const handleButtonClick = (result: string) => {
+    console.log('Button click result: ', result);
+  }
+
 	return (
 		<SafeAreaView>
 			<ScrollView contentInsetAdjustmentBehavior='automatic'>
 				<View style={styles.container}>
 					<Counter />
           <Router />
-          <Card text='Test card'/>
+          <Card text='Test card' onButtonClick={(result) => {handleButtonClick(result)}}/>
 				</View>
 			</ScrollView>
 		</SafeAreaView>
