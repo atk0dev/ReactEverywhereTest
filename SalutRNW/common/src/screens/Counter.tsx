@@ -13,7 +13,7 @@ export const Counter: React.FC<Props> = observer(() => {
   }
 
 	return (
-		<View>
+		<View style={styles.container}>
 			<View>
 				<Text style={styles.text}>
 					Counter {rootStore.counterStore.count}
@@ -23,12 +23,16 @@ export const Counter: React.FC<Props> = observer(() => {
 				title='Increment'
 				onPress={() => handleIncrement() }
 			/>
+      {/* <Text>Click me</Text> */}
 		</View>
 	);
 });
 
 const styles = StyleSheet.create({
-	text: {
+	container: {
+    backgroundColor: 'pink',
+  },
+  text: {
 		fontSize: 20,
 	},
 });
