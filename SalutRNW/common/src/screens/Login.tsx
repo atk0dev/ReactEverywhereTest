@@ -30,12 +30,12 @@ export const Login: React.FC<Props> = observer(() => {
 				rootStore.authStore.authorize({
 					userId: authResult.userID,
 					accessToken: authResult.token,
-					email: email
+					email: email,
 				});
 				rootStore.routerStore.changeScreen('UserInfo');
 			} else {
 				setError(`Login error`);
-        console.error(authResult);
+				console.error(authResult);
 			}
 		} catch (e) {
 			// handle error
@@ -46,9 +46,15 @@ export const Login: React.FC<Props> = observer(() => {
 
 	return (
 		<View style={styles.container}>
-			<Text>Login screen</Text>
-			<View>
+			<View style={styles.titleContainer}>
+				<Text style={styles.titleText}>
+					Login screen
+				</Text>
+			</View>
+
+			<View style={styles.inputContainer}>
 				<TextInput
+					style={styles.inputText}
 					placeholder={'Email'}
 					value={email}
 					onChangeText={setEmail}
@@ -56,8 +62,9 @@ export const Login: React.FC<Props> = observer(() => {
 				/>
 			</View>
 
-			<View>
+			<View style={styles.inputContainer}>
 				<TextInput
+					style={styles.inputText}
 					placeholder={'Password'}
 					value={password}
 					onChangeText={setPassword}
@@ -65,12 +72,18 @@ export const Login: React.FC<Props> = observer(() => {
 				/>
 			</View>
 
-			<Button
-				title={loading ? 'Logging in ...' : 'Login'}
-				onPress={() => {
-					handleLogin();
-				}}
-			/>
+			<View style={styles.buttonContainer}>
+				<Button
+					title={
+						loading
+							? 'Logging in ...'
+							: 'Login'
+					}
+					onPress={() => {
+						handleLogin();
+					}}
+				/>
+			</View>
 
 			{!!error && (
 				<View>
@@ -85,5 +98,25 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: 'orange',
 		minWidth: 300,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	buttonContainer: {
+		padding: 5,
+	},
+	inputContainer: {
+		padding: 5,
+		margin: 5,
+		borderWidth: 1,
+	},
+	inputText: {
+		minWidth: 250,
+	},
+	titleContainer: {
+		padding: 5,
+	},
+	titleText: {
+		fontSize: 20,
+		fontWeight: 'bold',
 	},
 });

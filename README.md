@@ -90,3 +90,38 @@ flyctl deploy
 // fly deploy --dockerfile Dockerfile
 
 open: https://reacteverywheretest.fly.dev
+
+--------------
+Update published website with latest version of Android APK:
+1. Copy /app/android/app/build/outputs/apk/release/app-release.apk to /web/build/ 
+
+------------------------------------
+Make new version:
+
+1. build library
+cd /common
+yarn build
+yarn publish-all
+
+2. build web
+cd /web
+yarn build
+
+3. build android app
+cd /app
+cd android
+./gradlew assembleRelease
+
+4. add apk to web 
+copy 
+/app/android/app/build/outputs/apk/release/app-release.apk
+to
+/web/build
+
+5. build web container
+cd /web
+docker image build -t devatk11/reacteverywheretest:v1 .
+docker image push devatk11/reacteverywheretest:v1
+
+6. publish web to fly
+flyctl deploy

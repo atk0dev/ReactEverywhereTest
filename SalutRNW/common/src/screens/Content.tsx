@@ -11,7 +11,7 @@ export const Content: React.FC<Props> = observer(() => {
 	const [cid, setCid] = useState('35d749e7-0779-4f5c-943a-e7dea1513270');
 	const [content, setContent] = useState<ContentResponse | null>();
 	const [loading, setLoading] = useState(false);
-  
+
 	const { api } = useServices();
 
 	const rootStore = React.useContext(RootStoreContext);
@@ -26,7 +26,8 @@ export const Content: React.FC<Props> = observer(() => {
 			setContent(c);
 		} catch (e) {
 			// handle error
-      setContent(null);
+			console.error('Error getting content:', e);
+			setContent(null);
 		} finally {
 			setLoading(false);
 		}
@@ -36,26 +37,23 @@ export const Content: React.FC<Props> = observer(() => {
 		<View>
 			<Text>Content</Text>
 
-			<TextInput
-				placeholder={'Content id'}
-				value={cid}
-				onChangeText={setCid}
-			/>
+			<View style={styles.inputContainer}>
+				<TextInput
+					placeholder={'Content id'}
+					value={cid}
+					onChangeText={setCid}
+				/>
+			</View>
 
 			<Button
-				title={
-					loading
-						? 'Logging in ...'
-						: 'Get content'
-				}
+				title={loading ? 'Getting...' : 'Get content'}
 				onPress={() => {
 					handleGetContent();
 				}}
 			/>
 
 			<View style={styles.contentContainer}>
-				
-        {!!content && !!content.contentItems && (
+				{!!content && !!content.contentItems && (
 					<View>
 						{content.contentItems.map(
 							(item, ndx) => (
@@ -75,7 +73,7 @@ export const Content: React.FC<Props> = observer(() => {
 											}
 										</Text>
 									)}
-                  {item.contentType ===
+									{item.contentType ===
 										'Text' && (
 										<Text>
 											{
@@ -125,5 +123,10 @@ const styles = StyleSheet.create({
 	image: {
 		width: 300,
 		height: 300,
+	},
+  inputContainer: {
+		padding: 5,
+		margin: 5,
+		borderWidth: 1,
 	},
 });
