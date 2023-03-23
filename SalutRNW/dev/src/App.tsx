@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+import { Dashboard } from './Dashboard';
 import { Card } from './salut-lib/components/Card';
 
 interface Props {}
@@ -19,7 +20,7 @@ export const App: React.FC<Props> = () => {
 					)
 				}
 			></Card>
-			{/* <Dashboard />; */}
+			<Dashboard />;
 		</View>
 	);
 };
