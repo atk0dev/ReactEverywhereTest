@@ -41,6 +41,17 @@ cd SalutRNW/app
 run-i (npx react-native run-ios)
 
 
+# ------- DEV -------
+
+1. Build dev
+cd SalutRNW/dev
+yarn
+
+2. Run dev
+cd SalutRNW/dev
+yarn start
+
+
 ------------------------
 APK for Android
 
