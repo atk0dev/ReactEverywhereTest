@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet} from 'react-native';
 import { Dashboard } from './Dashboard';
 import { Card } from './salut-lib/components/Card';
 
@@ -7,10 +7,10 @@ interface Props {}
 
 export const App: React.FC<Props> = () => {
 	return (
-		<View style={styles.app}>
-			<View>
-				<Text>Salut dev env: 0.1</Text>
-			</View>
+		<div style={styles.app}>
+			<div>
+				<p>Salut dev env: 0.1</p>
+			</div>
 			<Card
 				text='Test card'
 				onButtonClick={result =>
@@ -21,7 +21,7 @@ export const App: React.FC<Props> = () => {
 				}
 			></Card>
 			<Dashboard />;
-		</View>
+		</div>
 	);
 };
 
