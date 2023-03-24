@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, View, StyleSheet, Text } from 'react-native';
-import { Counter } from './screens/Counter';
+import { Counter } from './components/Counter';
 import { Router } from './Router';
 import { Card } from './components/Card';
 import { RootStoreContext } from './stores/RootStore';

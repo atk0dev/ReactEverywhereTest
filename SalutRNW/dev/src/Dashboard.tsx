@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-
+import { StyleSheet } from 'react-native';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { PropertiesList } from './PropertiesList';
+import { CanvasItem, ToolboxItem } from './types';
+import { getAvailableControls, getComponentFromToolbox } from './toolboxHelper';
+import { MdSettings, MdClose } from 'react-icons/md';
+import { ToolBar } from './ToolBar';
+import { DebugPanel } from './DebugPanel';
 
 interface Props {}
-
-// fake data generator
-const getItems = () => {
-	let result: Array<ToolboxItem> = [];
-	result.push({ id: '1', content: 'Item 1' });
-	result.push({ id: '2', content: 'Item 2' });
-	result.push({ id: '3', content: 'Item 3' });
-	return result;
-};
 
 const reorder = (
 	list: Array<ToolboxItem>,
@@ -27,9 +23,6 @@ const reorder = (
 	return result;
 };
 
-/**
- * Moves an item from one list to another list.
- */
 const move = (
 	source: Array<ToolboxItem>,
 	destination: Array<ToolboxItem>,
@@ -44,6 +37,8 @@ const move = (
 	let newItem: ToolboxItem = {
 		id: new Date().valueOf().toString(),
 		content: removed.content,
+		typeName: removed.typeName,
+		publicProps: [...removed.publicProps],
 	};
 
 	destClone.splice(droppableDestination.index, 0, newItem);
@@ -60,22 +55,67 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => {
 		margin: `0 0 ${grid}px 0`,
 
 		// change background colour if dragging
-		background: isDragging ? 'lightgreen' : 'grey',
+		background: isDragging ? '#cccccc' : '#d6d6d6',
 
 		// styles we need to apply on draggables
 		...draggableStyle,
 	};
 };
 
-const getListStyle = (isDraggingOver: boolean) => ({
-	background: isDraggingOver ? 'lightblue' : 'lightgrey',
-	padding: grid,
-	width: 250,
-});
+const getListStyle = (isDraggingOver: boolean, column: string) => {
+	const style = {
+		background: isDraggingOver ? '#e0e0e0' : '#eaeaea',
+		padding: grid,
+		width: '20%',
+	};
+
+	if (column === 'toolbox') {
+		style.width = '20%';
+	} else if (column === 'canvas') {
+		style.width = '60%';
+	}
+
+	return style;
+};
 
 export const Dashboard: React.FC<Props> = () => {
-	const [state, setState] = useState([getItems(), []]);
-	console.log('state', state);
+	const [state, setState] = useState([getAvailableControls(), []]);
+	const [debugPanelVisible, setDebugPanelVisible] = useState(false);
+
+	const [selectedControl, setSelectedControl] =
+		useState<CanvasItem | null>(null);
+
+	const deleteFromCanvas = (index: number) => {
+		const newState = [...state];
+		newState[1].splice(index, 1);
+		setState(newState.filter(group => group.length));
+	};
+
+	const showProperties = (index: number) => {
+		const canvasItems = state[1];
+		const selectedItem = canvasItems[index];
+
+		console.log('selectedItem', selectedItem);
+
+		let ctrl: CanvasItem = {
+			id: selectedItem.id,
+			content: selectedItem.content,
+			controlType: selectedItem.typeName,
+			controlName: `${selectedItem.typeName}-${selectedItem.id}`,
+      publicProps: selectedItem.publicProps,
+		};
+
+		setSelectedControl(ctrl);
+	};
+
+	const publishComposition = () => {
+		console.log('Publish Composition', state[1]);
+	};
+
+	const newComposition = () => {
+		console.log('New Composition');
+		setState([getAvailableControls(), []]);
+	};
 
 	function onDragEnd(result: { source: any; destination: any }) {
 		console.log('onDragEnd', result);
@@ -83,6 +123,10 @@ export const Dashboard: React.FC<Props> = () => {
 
 		// dropped outside the list
 		if (!destination) {
+			return;
+		}
+
+		if (destination.droppableId === '0') {
 			return;
 		}
 
@@ -102,7 +146,8 @@ export const Dashboard: React.FC<Props> = () => {
 			newState[sInd] = items;
 			setState(newState);
 		} else {
-			console.log('reorder between lists');
+			console.log('reorder between lists', state);
+
 			const result = move(
 				state[sInd],
 				state[dInd],
@@ -118,29 +163,119 @@ export const Dashboard: React.FC<Props> = () => {
 		}
 	}
 
+	const drawComponent = (item: ToolboxItem) => {
+		let componentResult = getComponentFromToolbox(item);
+		const itemOnCanvas = state[1].find(i => i.id === item.id);
+		if (itemOnCanvas) {
+			itemOnCanvas.publicProps = [
+				...componentResult.publicProps,
+			];
+		}
+
+		return componentResult.control;
+	};
+
 	return (
 		<div>
+			<div>
+				<ToolBar
+					onNewPress={() => {
+						newComposition();
+					}}
+					onPublishPress={() => {
+						publishComposition();
+					}}
+					onDebugPress={() => {
+						setDebugPanelVisible(
+							!debugPanelVisible
+						);
+					}}
+				/>
+			</div>
 			<div style={{ display: 'flex' }}>
 				<DragDropContext onDragEnd={onDragEnd}>
-					{state.map((el, ind) => (
-						<Droppable
-							key={ind}
-							droppableId={`${ind}`}
-						>
-							{(
-								provided,
-								snapshot
-							) => (
-								<div
-									ref={
-										provided.innerRef
-									}
-									style={getListStyle(
-										snapshot.isDraggingOver
-									)}
-									{...provided.droppableProps}
-								>
-									{el.map(
+					<Droppable key={1} droppableId={`0`}>
+						{(provided, snapshot) => (
+							<div
+								ref={
+									provided.innerRef
+								}
+								style={getListStyle(
+									snapshot.isDraggingOver,
+									'toolbox'
+								)}
+								{...provided.droppableProps}
+							>
+								{state[0].map(
+									(
+										item,
+										index
+									) => (
+										<Draggable
+											key={
+												item.id
+											}
+											draggableId={
+												item.id
+											}
+											index={
+												index
+											}
+										>
+											{(
+												provided,
+												snapshot
+											) => (
+												<div
+													ref={
+														provided.innerRef
+													}
+													{...provided.draggableProps}
+													{...provided.dragHandleProps}
+													style={getItemStyle(
+														snapshot.isDragging,
+														provided
+															.draggableProps
+															.style
+													)}
+												>
+													<div
+														style={{
+															display: 'flex',
+															justifyContent:
+																'space-around',
+														}}
+													>
+														{
+															item.content
+														}
+													</div>
+												</div>
+											)}
+										</Draggable>
+									)
+								)}
+								{
+									provided.placeholder
+								}
+							</div>
+						)}
+					</Droppable>
+
+					<Droppable key={2} droppableId={`1`}>
+						{(provided, snapshot) => (
+							<div
+								ref={
+									provided.innerRef
+								}
+								style={getListStyle(
+									snapshot.isDraggingOver,
+									'canvas'
+								)}
+								{...provided.droppableProps}
+							>
+								{state[1] &&
+									state[1].map(
 										(
 											item,
 											index
@@ -177,49 +312,80 @@ export const Dashboard: React.FC<Props> = () => {
 															style={{
 																display: 'flex',
 																justifyContent:
-																	'space-around',
+																	'space-between',
 															}}
 														>
-															{
-																item.content
-															}
-															<button
-																type='button'
-																onClick={() => {
-																	const newState =
-																		[
-																			...state,
-																		];
-																	newState[
-																		ind
-																	].splice(
-																		index,
-																		1
-																	);
-																	setState(
-																		newState.filter(
-																			group =>
-																				group.length
-																		)
-																	);
-																}}
+															<div
+																style={
+																	styles.canvasControlContainer
+																}
 															>
-																delete
-															</button>
+																{
+																	//item.content
+																	drawComponent(
+																		item
+																	)
+																}
+															</div>
+															<div
+																style={
+																	styles.canvasButtonsContainer
+																}
+															>
+																<button
+																	type='button'
+																	style={
+																		styles.canvasButton
+																	}
+																	onClick={() => {
+																		deleteFromCanvas(
+																			index
+																		);
+																	}}
+																>
+																	<MdClose
+																		size='20px'
+																		color='red'
+																	/>
+																</button>
+																<button
+																	type='button'
+																	style={
+																		styles.canvasButton
+																	}
+																	onClick={() => {
+																		showProperties(
+																			index
+																		);
+																	}}
+																>
+																	<MdSettings
+																		size='20px'
+																		color='green'
+																	/>
+																</button>
+															</div>
 														</div>
 													</div>
 												)}
 											</Draggable>
 										)
 									)}
-									{
-										provided.placeholder
-									}
-								</div>
-							)}
-						</Droppable>
-					))}
+								{
+									provided.placeholder
+								}
+							</div>
+						)}
+					</Droppable>
 				</DragDropContext>
+				<PropertiesList
+					control={selectedControl}
+				></PropertiesList>
+			</div>
+			<div>
+				{debugPanelVisible && (
+					<DebugPanel data={state[1]} />
+				)}
 			</div>
 		</div>
 	);
@@ -227,12 +393,31 @@ export const Dashboard: React.FC<Props> = () => {
 
 const styles = StyleSheet.create({
 	app: {},
+	divWithBorder: {
+		borderWidth: 1,
+		borderStyle: 'solid',
+		borderColor: '#000000',
+	},
+	canvasButton: {
+		margin: 3,
+	},
+	canvasButtonsContainer: {
+		display: 'flex',
+		flexDirection: 'column',
+		//justifyContent:'space-between',
+		//alignItems: 'center',
+		//width: '100%',
+		height: '100%',
+	},
+	canvasControlContainer: {
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		height: '100%',
+		width: '100%',
+	},
 });
-
-interface ToolboxItem {
-	id: string;
-	content: string;
-}
 
 interface DropItem {
 	index: number;

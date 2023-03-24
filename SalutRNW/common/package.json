@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "publish-web": "rimraf ../web/src/salut-lib && mkdir ../web/src/salut-lib && cp -R dist ../web/src/salut-lib",
-    "publish-dev": "rimraf ../dev/src/salut-lib && mkdir ../dev/src/salut-lib && mkdir ../dev/src/salut-lib/components && cp -R dist/components ../dev/src/salut-lib",
+    "publish-dev": "rimraf ../dev/src/salut-lib && mkdir ../dev/src/salut-lib && cp -R dist ../dev/src/salut-lib",
     "publish-app": "rimraf ../app/salut-lib && mkdir ../app/salut-lib && cp -R dist ../app/salut-lib",
     "publish-all": "yarn run publish-web && yarn run publish-dev && yarn run publish-app",
     "publish-clean": "rimraf ../web/src/salut-lib && rimraf ../dev/src/salut-lib && rimraf ../app/salut-lib"

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet} from 'react-native';
 import { Dashboard } from './Dashboard';
-import { Card } from './salut-lib/components/Card';
+import { Card } from './salut-lib/dist/components/Card';
 
 interface Props {}
 
@@ -11,7 +11,7 @@ export const App: React.FC<Props> = () => {
 			<div>
 				<p>Salut dev env: 0.1</p>
 			</div>
-			<Card
+			{/* <Card
 				text='Test card'
 				onButtonClick={result =>
 					console.log(
@@ -19,8 +19,8 @@ export const App: React.FC<Props> = () => {
 						result
 					)
 				}
-			></Card>
-			<Dashboard />;
+			></Card> */}
+			<Dashboard />
 		</div>
 	);
 };
