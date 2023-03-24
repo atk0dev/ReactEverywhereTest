@@ -1,24 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { Dashboard } from './Dashboard';
-import { Card } from './salut-lib/dist/components/Card';
-import { CanvasItem, ItemPublicProp } from './types';
+import { StyleSheet } from 'react-native';
+import { CanvasItem, PropertyChangedResult } from './types';
 
 interface Props {
 	control: CanvasItem | null;
+	onPropertyChanged?: (data: PropertyChangedResult) => void; 
 }
 
-export const PropertiesList: React.FC<Props> = ({ control }) => {
+export const PropertiesList: React.FC<Props> = ({ control, onPropertyChanged }) => {
 	const [controlProps, setControlProps] = React.useState(
 		control?.publicProps
 	);
 
-	React.useEffect(() => {
-		console.log('in use effect', control);
+	React.useEffect(() => {		
 		setControlProps(control?.publicProps);
 	}, [control]);
-
-	console.log('controlProps', controlProps);
 
 	const propertyChanged = (e: any) => {
 		if (
@@ -32,6 +28,12 @@ export const PropertiesList: React.FC<Props> = ({ control }) => {
 
 		if (controlProps) {
 			setControlProps([...controlProps]);
+		}
+
+		if (onPropertyChanged) {
+			if (control && controlProps) {
+				onPropertyChanged({controlId: control.id, typeName: control.controlType, publicProps: [...controlProps]});
+			}
 		}
 	};
 

@@ -2,20 +2,19 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { PropertiesList } from './PropertiesList';
-import { CanvasItem, ToolboxItem } from './types';
+import { CanvasItem, PropertyChangedResult, ToolboxItem } from './types';
 import { getAvailableControls, getComponentFromToolbox } from './toolboxHelper';
 import { MdSettings, MdClose } from 'react-icons/md';
 import { ToolBar } from './ToolBar';
 import { DebugPanel } from './DebugPanel';
 
-interface Props {}
+interface Props { }
 
 const reorder = (
 	list: Array<ToolboxItem>,
 	startIndex: number,
 	endIndex: number
 ) => {
-	console.log('list', list);
 	const result = Array.from(list);
 	const [removed] = result.splice(startIndex, 1);
 	result.splice(endIndex, 0, removed);
@@ -36,7 +35,6 @@ const move = (
 
 	let newItem: ToolboxItem = {
 		id: new Date().valueOf().toString(),
-		content: removed.content,
 		typeName: removed.typeName,
 		publicProps: [...removed.publicProps],
 	};
@@ -54,10 +52,8 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => {
 		padding: grid * 2,
 		margin: `0 0 ${grid}px 0`,
 
-		// change background colour if dragging
 		background: isDragging ? '#cccccc' : '#d6d6d6',
 
-		// styles we need to apply on draggables
 		...draggableStyle,
 	};
 };
@@ -79,6 +75,7 @@ const getListStyle = (isDraggingOver: boolean, column: string) => {
 };
 
 export const Dashboard: React.FC<Props> = () => {
+
 	const [state, setState] = useState([getAvailableControls(), []]);
 	const [debugPanelVisible, setDebugPanelVisible] = useState(false);
 
@@ -95,14 +92,11 @@ export const Dashboard: React.FC<Props> = () => {
 		const canvasItems = state[1];
 		const selectedItem = canvasItems[index];
 
-		console.log('selectedItem', selectedItem);
-
 		let ctrl: CanvasItem = {
 			id: selectedItem.id,
-			content: selectedItem.content,
 			controlType: selectedItem.typeName,
 			controlName: `${selectedItem.typeName}-${selectedItem.id}`,
-      publicProps: selectedItem.publicProps,
+			publicProps: selectedItem.publicProps,
 		};
 
 		setSelectedControl(ctrl);
@@ -113,12 +107,10 @@ export const Dashboard: React.FC<Props> = () => {
 	};
 
 	const newComposition = () => {
-		console.log('New Composition');
 		setState([getAvailableControls(), []]);
 	};
 
 	function onDragEnd(result: { source: any; destination: any }) {
-		console.log('onDragEnd', result);
 		const { source, destination } = result;
 
 		// dropped outside the list
@@ -126,7 +118,7 @@ export const Dashboard: React.FC<Props> = () => {
 			return;
 		}
 
-		if (destination.droppableId === '0') {
+		if (source.droppableId === '1' && destination.droppableId === '0') {
 			return;
 		}
 
@@ -134,20 +126,16 @@ export const Dashboard: React.FC<Props> = () => {
 		const dInd = +destination.droppableId;
 
 		if (sInd === dInd) {
-			console.log('reorder in the same list');
 			const items = reorder(
 				state[sInd],
 				source.index,
 				destination.index
 			);
 			const newState: Array<Array<ToolboxItem>> = [...state];
-			console.log(typeof newState);
 
 			newState[sInd] = items;
 			setState(newState);
 		} else {
-			console.log('reorder between lists', state);
-
 			const result = move(
 				state[sInd],
 				state[dInd],
@@ -175,6 +163,10 @@ export const Dashboard: React.FC<Props> = () => {
 		return componentResult.control;
 	};
 
+	const propertyChangedResult = (result: PropertyChangedResult) => {
+		console.log('in dashboard. Property changed result', result);
+	}
+
 	return (
 		<div>
 			<div>
@@ -186,6 +178,7 @@ export const Dashboard: React.FC<Props> = () => {
 						publishComposition();
 					}}
 					onDebugPress={() => {
+						console.log('STATE', state);
 						setDebugPanelVisible(
 							!debugPanelVisible
 						);
@@ -247,7 +240,7 @@ export const Dashboard: React.FC<Props> = () => {
 														}}
 													>
 														{
-															item.content
+															item.typeName
 														}
 													</div>
 												</div>
@@ -361,7 +354,6 @@ export const Dashboard: React.FC<Props> = () => {
 																>
 																	<MdSettings
 																		size='20px'
-																		color='green'
 																	/>
 																</button>
 															</div>
@@ -380,6 +372,9 @@ export const Dashboard: React.FC<Props> = () => {
 				</DragDropContext>
 				<PropertiesList
 					control={selectedControl}
+					onPropertyChanged={(result) => {
+						propertyChangedResult(result);
+					}}
 				></PropertiesList>
 			</div>
 			<div>

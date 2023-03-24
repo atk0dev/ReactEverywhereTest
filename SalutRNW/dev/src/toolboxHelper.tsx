@@ -7,11 +7,11 @@ import { CreateControlResult, ItemPublicProp, ToolboxItem } from './types';
 
 export const getAvailableControls = () => {
 	let result: Array<ToolboxItem> = [];
-	result.push({ id: '11', content: 'Card', typeName: 'Card', publicProps: [{name: 'text', type: 'string'}] });
-	result.push({ id: '13', content: 'Counter', typeName: 'Counter', publicProps: [] });
-	result.push({ id: '14', content: 'Login', typeName: 'Login', publicProps: [] });
-	result.push({ id: '15', content: 'User info', typeName: 'UserInfo', publicProps: [] });
-  result.push({ id: '16', content: 'Content', typeName: 'Content', publicProps: [] });
+	result.push({ id: '11', typeName: 'Card', publicProps: [{name: 'text', type: 'string', value: ''}] });
+	result.push({ id: '13', typeName: 'Counter', publicProps: [] });
+	result.push({ id: '14', typeName: 'Login', publicProps: [] });
+	result.push({ id: '15', typeName: 'UserInfo', publicProps: [] });
+  result.push({ id: '16', typeName: 'Content', publicProps: [] });
 	return result;
 };
 
@@ -21,18 +21,15 @@ export const getComponentFromToolbox = (item: ToolboxItem) => {
   let pp: Array<ItemPublicProp> = [];
 
   if (item.typeName === 'Card') {
-    pp.push({ name: 'text', type:'string', value: item.content });
+    pp.push({ name: 'text', type:'string', value: 'DEMO' });
   }
 
   let reactControl = (
 		<div>
-			{item.typeName === 'Text' && (
-				<p>{item.content}</p>
-			)}
-
+			
 			{item.typeName === 'Card' && (
 				<Card
-					text={item.content}
+					text={'DEMO'}
 					onButtonClick={result => {}}
 				></Card>
 			)}
@@ -52,9 +49,6 @@ export const getComponentFromToolbox = (item: ToolboxItem) => {
     publicProps: pp,
   }
 
-  console.log('react control type: ', typeof(reactControl));
-  
-  //return reactControl; 
   return result;
 };
 
