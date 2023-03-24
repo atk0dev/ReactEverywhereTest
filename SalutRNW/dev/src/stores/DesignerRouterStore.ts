@@ -1,13 +1,13 @@
 import { action, makeObservable, observable } from 'mobx';
-import { RootStore } from './RootStore';
+import { DesignerRootStore } from './DesignerRootStore';
 
-type Routes = 'Login'| 'UserInfo';
+type Routes = 'Login'| 'Main';
 
-export class RouterStore {
-  screen: Routes = 'Login';
-  rootStore: RootStore;
+export class DesignerRouterStore {
+  screen: Routes = 'Main';
+  rootStore: DesignerRootStore;
 
-  constructor(rootStore: RootStore) {
+  constructor(rootStore: DesignerRootStore) {
     this.rootStore = rootStore;
 
     makeObservable(this, {

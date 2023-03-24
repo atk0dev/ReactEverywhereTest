@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { PropertiesList } from './PropertiesList';
@@ -7,6 +7,9 @@ import { getAvailableControls, getComponentFromToolbox } from './toolboxHelper';
 import { MdSettings, MdClose } from 'react-icons/md';
 import { ToolBar } from './ToolBar';
 import { DebugPanel } from './DebugPanel';
+
+import { observer } from 'mobx-react-lite';
+import { DesignerRootStoreContext } from '../src/stores/DesignerRootStore';
 
 interface Props { }
 
@@ -74,18 +77,20 @@ const getListStyle = (isDraggingOver: boolean, column: string) => {
 	return style;
 };
 
-export const Dashboard: React.FC<Props> = () => {
+export const Dashboard: React.FC<Props> = observer(() => {
+
+	const rootStore = useContext(DesignerRootStoreContext);
 
 	const [state, setState] = useState([getAvailableControls(), []]);
 	const [debugPanelVisible, setDebugPanelVisible] = useState(false);
-
-	const [selectedControl, setSelectedControl] =
-		useState<CanvasItem | null>(null);
+	const [selectedControl, setSelectedControl] = useState<CanvasItem>();
 
 	const deleteFromCanvas = (index: number) => {
 		const newState = [...state];
 		newState[1].splice(index, 1);
-		setState(newState.filter(group => group.length));
+		//setState(newState.filter(group => group.length));
+		setState(newState);
+		rootStore.mainStore.setCanvasStore(newState[1])	
 	};
 
 	const showProperties = (index: number) => {
@@ -93,10 +98,7 @@ export const Dashboard: React.FC<Props> = () => {
 		const selectedItem = canvasItems[index];
 
 		let ctrl: CanvasItem = {
-			id: selectedItem.id,
-			controlType: selectedItem.typeName,
-			controlName: `${selectedItem.typeName}-${selectedItem.id}`,
-			publicProps: selectedItem.publicProps,
+			id: selectedItem.id,			
 		};
 
 		setSelectedControl(ctrl);
@@ -108,6 +110,7 @@ export const Dashboard: React.FC<Props> = () => {
 
 	const newComposition = () => {
 		setState([getAvailableControls(), []]);
+		rootStore.mainStore.setCanvasStore([])
 	};
 
 	function onDragEnd(result: { source: any; destination: any }) {
@@ -135,6 +138,7 @@ export const Dashboard: React.FC<Props> = () => {
 
 			newState[sInd] = items;
 			setState(newState);
+			rootStore.mainStore.setCanvasStore(newState[1])
 		} else {
 			const result = move(
 				state[sInd],
@@ -147,20 +151,23 @@ export const Dashboard: React.FC<Props> = () => {
 			newState[sInd] = state[sInd];
 			newState[dInd] = result;
 
-			setState(newState.filter(group => group.length));
+			//setState(newState.filter(group => group.length));
+			setState(newState);
+			rootStore.mainStore.setCanvasStore(newState[1])
 		}
 	}
 
 	const drawComponent = (item: ToolboxItem) => {
 		let componentResult = getComponentFromToolbox(item);
-		const itemOnCanvas = state[1].find(i => i.id === item.id);
-		if (itemOnCanvas) {
-			itemOnCanvas.publicProps = [
-				...componentResult.publicProps,
-			];
-		}
+		
+		// const itemOnCanvas = state[1].find(i => i.id === item.id);
+		// if (itemOnCanvas) {
+		// 	itemOnCanvas.publicProps = [
+		// 		...componentResult.publicProps,
+		// 	];
+		// }
 
-		return componentResult.control;
+		return componentResult;
 	};
 
 	const propertyChangedResult = (result: PropertyChangedResult) => {
@@ -178,7 +185,6 @@ export const Dashboard: React.FC<Props> = () => {
 						publishComposition();
 					}}
 					onDebugPress={() => {
-						console.log('STATE', state);
 						setDebugPanelVisible(
 							!debugPanelVisible
 						);
@@ -379,12 +385,12 @@ export const Dashboard: React.FC<Props> = () => {
 			</div>
 			<div>
 				{debugPanelVisible && (
-					<DebugPanel data={state[1]} />
+					<DebugPanel data={rootStore.mainStore.canvasState} />
 				)}
 			</div>
 		</div>
 	);
-};
+});
 
 const styles = StyleSheet.create({
 	app: {},

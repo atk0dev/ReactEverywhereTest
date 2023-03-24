@@ -1,30 +1,35 @@
-import React from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
+import { DesignerRootStoreContext } from './stores/DesignerRootStore';
 import { CanvasItem, PropertyChangedResult } from './types';
 
 interface Props {
-	control: CanvasItem | null;
+	control?: CanvasItem;
 	onPropertyChanged?: (data: PropertyChangedResult) => void; 
 }
 
-export const PropertiesList: React.FC<Props> = ({ control, onPropertyChanged }) => {
-	const [controlProps, setControlProps] = React.useState(
-		control?.publicProps
-	);
+export const PropertiesList: React.FC<Props> = observer(({ control, onPropertyChanged }) => {
+
+	const rootStore = useContext(DesignerRootStoreContext);
+	
+	const [selectedControl, setSelectedControl] = React.useState(rootStore.mainStore.canvasState.find(i => i.id === control?.id));
+	const [controlProps, setControlProps] = React.useState(rootStore.mainStore.canvasState.find(i => i.id === control?.id)?.publicProps);
 
 	React.useEffect(() => {		
-		setControlProps(control?.publicProps);
-	}, [control]);
+		setControlProps(rootStore.mainStore.canvasState.find(i => i.id === control?.id)?.publicProps);
+	}, [control, rootStore.mainStore.canvasState]);
 
-	const propertyChanged = (e: any) => {
-		if (
-			control !== null &&
-			control.publicProps !== null &&
-			control.publicProps !== undefined &&
-			control.publicProps?.length > 0
-		) {
-			control.publicProps[0].value = e.target.value;
-		}
+	const propertyChanged = (propName: string, value: string) => {
+		console.log('propertyChanged', value)
+		// if (
+		// 	control !== null &&
+		// 	control.publicProps !== null &&
+		// 	control.publicProps !== undefined &&
+		// 	control.publicProps?.length > 0
+		// ) {
+		// 	control.publicProps[0].value = value;
+		// }
 
 		if (controlProps) {
 			setControlProps([...controlProps]);
@@ -32,9 +37,11 @@ export const PropertiesList: React.FC<Props> = ({ control, onPropertyChanged }) 
 
 		if (onPropertyChanged) {
 			if (control && controlProps) {
-				onPropertyChanged({controlId: control.id, typeName: control.controlType, publicProps: [...controlProps]});
+				let r = {controlId: control.id, propertyName: propName, propertyValue: value};
+				onPropertyChanged(r);
+				rootStore.mainStore.setControlValue(r);
 			}
-		}
+		}		
 	};
 
 	return (
@@ -48,7 +55,7 @@ export const PropertiesList: React.FC<Props> = ({ control, onPropertyChanged }) 
 						<p>Id: {control.id}</p>
 						<p>
 							Type:{' '}
-							{control.controlType}
+							{selectedControl?.typeName}
 						</p>
 
 						{controlProps?.map(
@@ -65,7 +72,8 @@ export const PropertiesList: React.FC<Props> = ({ control, onPropertyChanged }) 
 										}
 										onChange={e =>
 											propertyChanged(
-												e
+												key.name,
+												e.target.value
 											)
 										}
 									/>
@@ -77,7 +85,7 @@ export const PropertiesList: React.FC<Props> = ({ control, onPropertyChanged }) 
 			</div>
 		</div>
 	);
-};
+});
 
 const styles = StyleSheet.create({
 	app: {

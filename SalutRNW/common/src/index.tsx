@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, View, StyleSheet, Text } from 'react-native';
 import { Counter } from './components/Counter';
 import { Router } from './Router';
-import { Card } from './components/Card';
 import { RootStoreContext } from './stores/RootStore';
 import { Content } from './screens/Content';
 import { observer } from 'mobx-react-lite';
@@ -12,9 +11,9 @@ export const App = observer(() => {
 
 	const [contentVisible, setContentVisible] = useState(rootStore.authStore.authorized);
 
-	const handleButtonClick = (result: string) => {
-		console.log('Button click result: ', result);
-	};
+	// const handleButtonClick = (result: string) => {
+	// 	console.log('Button click result: ', result);
+	// };
 
 	useEffect(() => {
 		init();

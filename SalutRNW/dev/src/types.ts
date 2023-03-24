@@ -1,8 +1,5 @@
 export interface CanvasItem {
 	id: string;
-	controlName: string;
-  controlType: string;
-  publicProps?: Array<ItemPublicProp>;
 }
 
 export interface ToolboxItem {
@@ -25,7 +22,7 @@ export interface CreateControlResult {
 
 export interface PropertyChangedResult {
   controlId: string;
-  typeName: string;
-  publicProps: Array<ItemPublicProp>;
+  propertyName: string;
+  propertyValue: string;
 
 }

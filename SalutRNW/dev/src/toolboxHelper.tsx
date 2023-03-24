@@ -7,30 +7,29 @@ import { CreateControlResult, ItemPublicProp, ToolboxItem } from './types';
 
 export const getAvailableControls = () => {
 	let result: Array<ToolboxItem> = [];
-	result.push({ id: '11', typeName: 'Card', publicProps: [{name: 'text', type: 'string', value: ''}] });
+	result.push({ id: '11', typeName: 'Card', publicProps: [{ name: 'text', type: 'string', value: '' }] });
 	result.push({ id: '13', typeName: 'Counter', publicProps: [] });
 	result.push({ id: '14', typeName: 'Login', publicProps: [] });
 	result.push({ id: '15', typeName: 'UserInfo', publicProps: [] });
-  result.push({ id: '16', typeName: 'Content', publicProps: [] });
+	result.push({ id: '16', typeName: 'Content', publicProps: [] });
 	return result;
 };
 
 export const getComponentFromToolbox = (item: ToolboxItem) => {
-	
 
-  let pp: Array<ItemPublicProp> = [];
+	// let pp: Array<ItemPublicProp> = [];
 
-  if (item.typeName === 'Card') {
-    pp.push({ name: 'text', type:'string', value: 'DEMO' });
-  }
+	// if (item.typeName === 'Card') {
+	// 	pp.push({ name: 'text', type: 'string', value: 'DEMO' });
+	// }
 
-  let reactControl = (
+	let reactControl = (
 		<div>
-			
+
 			{item.typeName === 'Card' && (
 				<Card
 					text={'DEMO'}
-					onButtonClick={result => {}}
+					onButtonClick={result => { }}
 				></Card>
 			)}
 
@@ -40,15 +39,16 @@ export const getComponentFromToolbox = (item: ToolboxItem) => {
 
 			{item.typeName === 'UserInfo' && <UserInfo />}
 
-      {item.typeName === 'Content' && <Content />}
+			{item.typeName === 'Content' && <Content />}
 		</div>
 	);
 
-  let result: CreateControlResult = {
-    control: reactControl,
-    publicProps: pp,
-  }
+	// let result: CreateControlResult = {
+	// 	control: reactControl,
+	// 	publicProps: pp,
+	// }
 
-  return result;
+	return reactControl;
+	//return result;
 };
 
