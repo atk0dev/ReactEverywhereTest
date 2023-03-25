@@ -341,6 +341,84 @@
 			"response": []
 		},
 		{
+			"name": "Get latest from remote",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "secret-api-key",
+						"type": "text"
+					},
+					{
+						"key": "x-tenant",
+						"value": "reacteverywhere",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://reacteverywhereapi.fly.dev/products/latest?owner=salut",
+					"protocol": "https",
+					"host": [
+						"reacteverywhereapi",
+						"fly",
+						"dev"
+					],
+					"path": [
+						"products",
+						"latest"
+					],
+					"query": [
+						{
+							"key": "owner",
+							"value": "salut"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create on remote",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "secret-api-key",
+						"type": "text"
+					},
+					{
+						"key": "x-tenant",
+						"value": "reacteverywhere",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"owner\": \"salut\",\r\n    \"name\": \"Demo1\",\r\n    \"description\": \"Demo project 1\",\r\n    \"components\": [\r\n        {\r\n            \"id\": \"11111\",\r\n            \"typeName\": \"Card\",\r\n            \"publicProps\": [\r\n                {\r\n                    \"name\": \"text\",\r\n                    \"type\": \"string\",\r\n                    \"value\": \"Hello\"\r\n                },\r\n                {\r\n                    \"name\": \"color\",\r\n                    \"type\": \"string\",\r\n                    \"value\": \"pink\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reacteverywhereapi.fly.dev/products",
+					"protocol": "https",
+					"host": [
+						"reacteverywhereapi",
+						"fly",
+						"dev"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get config",
 			"request": {
 				"method": "GET",

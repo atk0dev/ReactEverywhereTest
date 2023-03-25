@@ -33,8 +33,8 @@ builder.Services.AddCors(options =>
             policy.WithOrigins(
                     "http://localhost:3000",
                     "https://localhost:3000",
-                    "https://reacteverywheretest.fly.dev/",
-                    "https://reacteverywheredev.fly.dev/")
+                    "https://reacteverywheretest.fly.dev",
+                    "https://reacteverywheredev.fly.dev")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
