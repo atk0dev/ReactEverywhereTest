@@ -17,8 +17,7 @@ export const Login: React.FC<Props> = observer(() => {
 	const [error, setError] = useState('');
 
 	const handleLogin = async () => {
-		console.log('Handle login');
-
+		
 		setLoading(true);
 		try {
 			const authResult = await api.auth.login(

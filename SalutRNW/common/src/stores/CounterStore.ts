@@ -21,6 +21,5 @@ export class CounterStore {
 
   increment() {
     this.count++;
-    console.log('CounterStore.increment');
   }
 }

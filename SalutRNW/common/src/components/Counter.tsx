@@ -30,7 +30,7 @@ export const Counter: React.FC<Props> = observer(() => {
 
 const styles = StyleSheet.create({
 	container: {
-    backgroundColor: 'pink',
+    //backgroundColor: 'pink',
   },
   text: {
 		fontSize: 20,

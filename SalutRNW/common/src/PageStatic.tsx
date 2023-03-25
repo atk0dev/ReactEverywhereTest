@@ -26,8 +26,8 @@ export const PageStatic = observer(() => {
 	};
 
 	return (
-		<SafeAreaView>
-			<ScrollView>
+		// <SafeAreaView>
+		// 	<ScrollView>
 				<View style={styles.container}>
 					<View style={styles.counterView}>
 						<Counter />
@@ -49,8 +49,8 @@ export const PageStatic = observer(() => {
 					)}
 					
 				</View>
-			</ScrollView>
-		</SafeAreaView>
+		// 	</ScrollView>
+		// </SafeAreaView>
 	);
 });
 
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		backgroundColor: 'pink',
+		//backgroundColor: 'pink',
 	},
 	counterView: {
 		padding: 40,

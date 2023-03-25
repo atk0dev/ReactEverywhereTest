@@ -138,8 +138,6 @@ export const Dashboard: React.FC<Props> = observer(() => {
 			
 			const publishResult = await api.project.publishProject(projectToPublish);
 
-			console.log('Publish result: ', publishResult);
-		
 			if (publishResult && publishResult.isSuccess) {
 				notify('Publish OK');
 			} else {
@@ -219,7 +217,6 @@ export const Dashboard: React.FC<Props> = observer(() => {
 
 	const propertyChangedResult = (result: PropertyChangedResult) => {
 		const newState = rootStore.mainStore.canvasState;
-		console.log('newState', [...newState]);
 		setState([[...state[0]], [...newState]]);
 	}
 
