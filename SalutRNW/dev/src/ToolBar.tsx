@@ -5,52 +5,58 @@ import { StyleSheet } from 'react-native';
 interface Props {
 	onNewPress?: () => void;
 	onPublishPress?: () => void;
-  onDebugPress?: () => void;
+	onDebugPress?: () => void;
 }
 
 export const ToolBar: React.FC<Props> = ({ onNewPress, onPublishPress, onDebugPress }) => {
 	return (
 		<div style={styles.app}>
-			<div>
-				<button
-					type='button'
-					style={styles.toolbarButton}
-					onClick={() => {
-						if (onNewPress) {
-							onNewPress();
-						}
-					}}
-				>
-					<MdFiberNew size='30px' />
-				</button>
+			<div style={styles.captionText}>
+				<p>Salut dev env: 0.1</p>
 			</div>
-			<div>
-				<button
-					type='button'
-					style={styles.toolbarButton}
-					onClick={() => {
-						if (onPublishPress) {
-							onPublishPress();
-						}
-					}}
-				>
-					<MdPublish size='30px' />
-				</button>
+			
+
+				<div style={styles.toolbarButtonContainer}>
+					<button
+						type='button'
+						style={styles.toolbarButton}
+						onClick={() => {
+							if (onNewPress) {
+								onNewPress();
+							}
+						}}
+					>
+						<MdFiberNew size='30px' />
+					</button>
+				</div>
+				<div>
+					<button
+						type='button'
+						style={styles.toolbarButton}
+						onClick={() => {
+							if (onPublishPress) {
+								onPublishPress();
+							}
+						}}
+					>
+						<MdPublish size='30px' />
+					</button>
+				</div>
+				<div>
+					<button
+						type='button'
+						style={styles.toolbarButton}
+						onClick={() => {
+							if (onDebugPress) {
+								onDebugPress();
+							}
+						}}
+					>
+						<MdBuild size='30px' />
+					</button>
+				</div>
 			</div>
-      <div>
-				<button
-					type='button'
-					style={styles.toolbarButton}
-					onClick={() => {
-						if (onDebugPress) {
-							onDebugPress();
-						}
-					}}
-				>
-					<MdBuild size='30px' />
-				</button>
-			</div>
-		</div>
+		
 	);
 };
 
@@ -62,9 +68,16 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		height: 50,
 		width: '100%',
-    backgroundColor: '#eaeaea',
+		backgroundColor: '#eaeaea',
 	},
 	toolbarButton: {
 		margin: 3,
 	},
+	toolbarButtonContainer: {
+		paddingLeft: 16,
+	},
+	captionText: {
+		width: '20%',
+		textAlign: 'center',
+	}
 });

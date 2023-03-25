@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { PropertiesList } from './PropertiesList';
-import { CanvasItem, PropertyChangedResult, ToolboxItem } from './types';
+import { CanvasItem, ItemPublicProp, PropertyChangedResult, ToolboxItem } from './types';
 import { getAvailableControls, getComponentFromToolbox } from './toolboxHelper';
 import { MdSettings, MdClose } from 'react-icons/md';
 import { ToolBar } from './ToolBar';
@@ -85,6 +85,15 @@ export const Dashboard: React.FC<Props> = observer(() => {
 	const [debugPanelVisible, setDebugPanelVisible] = useState(false);
 	const [selectedControl, setSelectedControl] = useState<CanvasItem>();
 
+	useEffect(() => {
+		const storeState = rootStore.mainStore.canvasState;
+		
+		if (storeState && storeState.length > 0) {
+			setState([getAvailableControls(), [...storeState]]);
+		}
+			
+	  }, [rootStore.mainStore.canvasState]);
+
 	const deleteFromCanvas = (index: number) => {
 		const newState = [...state];
 		newState[1].splice(index, 1);
@@ -158,20 +167,21 @@ export const Dashboard: React.FC<Props> = observer(() => {
 	}
 
 	const drawComponent = (item: ToolboxItem) => {
-		let componentResult = getComponentFromToolbox(item);
 		
-		// const itemOnCanvas = state[1].find(i => i.id === item.id);
-		// if (itemOnCanvas) {
-		// 	itemOnCanvas.publicProps = [
-		// 		...componentResult.publicProps,
-		// 	];
-		// }
+		let propsFromStore = rootStore.mainStore.canvasState.find(i => i.id === item.id)
+		
+		let propsToProvide: Array<ItemPublicProp> = [];
+		if (propsFromStore && propsFromStore.publicProps) {
+			propsToProvide = propsFromStore.publicProps;
+		}
 
+		let componentResult = getComponentFromToolbox(item.typeName, propsToProvide);
 		return componentResult;
 	};
 
 	const propertyChangedResult = (result: PropertyChangedResult) => {
-		console.log('in dashboard. Property changed result', result);
+		const newState = rootStore.mainStore.canvasState;
+		setState([[...state[0]], [...newState]]);
 	}
 
 	return (

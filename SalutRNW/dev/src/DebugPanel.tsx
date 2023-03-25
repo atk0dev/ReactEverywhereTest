@@ -39,13 +39,10 @@ export const DebugPanel: React.FC<Props> = ({ data }) => {
 					data={data}
 					theme={{
 						extend: theme,
-						// underline keys for literal values
 						valueLabel: {
 							textDecoration:
 								'underline',
 						},
-						// switch key for objects to uppercase when object is expanded.
-						// `nestedNodeLabel` receives additional argument `expandable`
 						nestedNodeLabel: (
 							{ style },
 							keyPath,
@@ -54,10 +51,6 @@ export const DebugPanel: React.FC<Props> = ({ data }) => {
 						) => ({
 							style: {
 								...style,
-								textTransform:
-									expanded
-										? 'uppercase'
-										: 'lowercase',
 							},
 						}),
 					}}

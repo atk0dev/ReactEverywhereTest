@@ -24,14 +24,12 @@ export class DesignerMainStore {
   }
 
   setCanvasStore(canvasState: Array<ToolboxItem>) {
-    console.log('Set canvas store', canvasState);
     this.canvasState = canvasState;
   }
 
   setControlValue(value: PropertyChangedResult) {
     if (!value) return;
 
-    console.log('value', value);
     let item = this.canvasState.find(i => i.id === value.controlId);
     if (!item) return;
     

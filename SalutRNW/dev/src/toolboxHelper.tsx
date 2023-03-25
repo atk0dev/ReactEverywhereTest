@@ -3,7 +3,7 @@ import { Counter } from './salut-lib/dist/components/Counter';
 import { Content } from './salut-lib/dist/screens/Content';
 import { Login } from './salut-lib/dist/screens/Login';
 import { UserInfo } from './salut-lib/dist/screens/UserInfo';
-import { CreateControlResult, ItemPublicProp, ToolboxItem } from './types';
+import { ItemPublicProp, ToolboxItem } from './types';
 
 export const getAvailableControls = () => {
 	let result: Array<ToolboxItem> = [];
@@ -15,40 +15,28 @@ export const getAvailableControls = () => {
 	return result;
 };
 
-export const getComponentFromToolbox = (item: ToolboxItem) => {
-
-	// let pp: Array<ItemPublicProp> = [];
-
-	// if (item.typeName === 'Card') {
-	// 	pp.push({ name: 'text', type: 'string', value: 'DEMO' });
-	// }
+export const getComponentFromToolbox = (itemTypeName: string, publicProps: Array<ItemPublicProp>) => {
 
 	let reactControl = (
 		<div>
 
-			{item.typeName === 'Card' && (
+			{itemTypeName === 'Card' && (
 				<Card
-					text={'DEMO'}
+					text={publicProps?.find(p => p.name === 'text')?.value}
 					onButtonClick={result => { }}
 				></Card>
 			)}
 
-			{item.typeName === 'Counter' && <Counter />}
+			{itemTypeName === 'Counter' && <Counter />}
 
-			{item.typeName === 'Login' && <Login />}
+			{itemTypeName === 'Login' && <Login />}
 
-			{item.typeName === 'UserInfo' && <UserInfo />}
+			{itemTypeName === 'UserInfo' && <UserInfo />}
 
-			{item.typeName === 'Content' && <Content />}
+			{itemTypeName === 'Content' && <Content />}
 		</div>
 	);
 
-	// let result: CreateControlResult = {
-	// 	control: reactControl,
-	// 	publicProps: pp,
-	// }
-
 	return reactControl;
-	//return result;
 };
 

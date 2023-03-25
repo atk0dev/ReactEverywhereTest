@@ -28,9 +28,6 @@ export const App: React.FC<Props> = observer(() => {
 
 	return (
 		<div style={styles.app}>
-			<div>
-				<p>Salut dev env: 0.1</p>
-			</div>			
 			<Dashboard />
 		</div>
 	);

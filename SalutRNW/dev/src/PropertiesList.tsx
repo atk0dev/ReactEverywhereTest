@@ -21,16 +21,6 @@ export const PropertiesList: React.FC<Props> = observer(({ control, onPropertyCh
 	}, [control, rootStore.mainStore.canvasState]);
 
 	const propertyChanged = (propName: string, value: string) => {
-		console.log('propertyChanged', value)
-		// if (
-		// 	control !== null &&
-		// 	control.publicProps !== null &&
-		// 	control.publicProps !== undefined &&
-		// 	control.publicProps?.length > 0
-		// ) {
-		// 	control.publicProps[0].value = value;
-		// }
-
 		if (controlProps) {
 			setControlProps([...controlProps]);
 		}
