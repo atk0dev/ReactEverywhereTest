@@ -11,6 +11,9 @@ import { DebugPanel } from './DebugPanel';
 import { observer } from 'mobx-react-lite';
 import { DesignerRootStoreContext } from '../src/stores/DesignerRootStore';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 interface Props { }
 
 const reorder = (
@@ -115,12 +118,15 @@ export const Dashboard: React.FC<Props> = observer(() => {
 
 	const publishComposition = () => {
 		console.log('Publish Composition', state[1]);
+		notify('Hello');
 	};
 
 	const newComposition = () => {
 		setState([getAvailableControls(), []]);
 		rootStore.mainStore.setCanvasStore([])
 	};
+
+	const notify = (message: string) => toast(message, {position: toast.POSITION.BOTTOM_RIGHT});
 
 	function onDragEnd(result: { source: any; destination: any }) {
 		const { source, destination } = result;
@@ -398,6 +404,7 @@ export const Dashboard: React.FC<Props> = observer(() => {
 					<DebugPanel data={rootStore.mainStore.canvasState} />
 				)}
 			</div>
+			<ToastContainer />
 		</div>
 	);
 });
