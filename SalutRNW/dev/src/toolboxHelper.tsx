@@ -22,11 +22,6 @@ export const getAvailableControls = () => {
 
 export const getComponentFromToolbox = (itemTypeName: string, publicProps: Array<ItemPublicProp>) => {
 
-	console.log('itemTypeName', itemTypeName);
-	console.log('1 contentId', publicProps?.find(p => p.name === 'contentId')?.value);
-	console.log('2 buttonGetContentVisible', publicProps?.find(p => p.name === 'buttonGetContentVisible')?.value === 'true' ? true : false)
-	console.log('3 buttonHideContentVisible', publicProps?.find(p => p.name === 'buttonHideContentVisible')?.value === 'true' ? true : false)
-
 	let reactControl = (
 		<div>
 

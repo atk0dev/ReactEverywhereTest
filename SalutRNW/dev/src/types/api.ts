@@ -1,3 +1,5 @@
+import { ToolboxItem } from "../types";
+
 export type LoginResponse = {
   token: string;
   userID: string;
@@ -35,4 +37,21 @@ export type PublicPropResponse = {
   name: string;
   type: string;
   value: string;
+}
+
+export type PublishProjectResponse = {
+  isSuccess: boolean;
+  isFailure: boolean;
+  value: ValueId;
+}
+
+export type ValueId = {
+  id: number;
+}
+
+export type PublishProjectRequest = {
+  owner: string;
+  name: string;
+  description: string;
+  components: ToolboxItem[]
 }

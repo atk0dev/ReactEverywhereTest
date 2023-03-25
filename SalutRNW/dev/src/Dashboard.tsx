@@ -14,6 +14,9 @@ import { DesignerRootStoreContext } from '../src/stores/DesignerRootStore';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { useServices } from '../src/services';
+import { PublishProjectRequest } from './types/api';
+
 interface Props { }
 
 const reorder = (
@@ -84,9 +87,14 @@ export const Dashboard: React.FC<Props> = observer(() => {
 
 	const rootStore = useContext(DesignerRootStoreContext);
 
+	const { api } = useServices();
+
 	const [state, setState] = useState([getAvailableControls(), []]);
 	const [debugPanelVisible, setDebugPanelVisible] = useState(false);
 	const [selectedControl, setSelectedControl] = useState<CanvasItem>();
+
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState('');
 
 	useEffect(() => {
 		const storeState = rootStore.mainStore.canvasState;
@@ -116,8 +124,32 @@ export const Dashboard: React.FC<Props> = observer(() => {
 		setSelectedControl(ctrl);
 	};
 
-	const publishComposition = () => {
-		notify('Publish');
+	const publishComposition = async () => {
+		setLoading(true);
+
+		try {
+
+			let projectToPublish: PublishProjectRequest = {
+				name: "Demo1",
+				owner:"salut",
+				description: "Demo project",
+				components: [...rootStore.mainStore.canvasState],
+			};
+			
+			const publishResult = await api.project.publishProject(projectToPublish);
+
+			console.log('Publish result: ', publishResult);
+		
+			if (publishResult && publishResult.isSuccess) {
+				notify('Publish OK');
+			} else {
+				setError(`Publish error`);
+			}
+		} catch (e) {
+			// handle error
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	const newComposition = () => {

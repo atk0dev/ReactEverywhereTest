@@ -22,7 +22,7 @@ export class AuthStore {
 			userEmail: observable,
 
 			authorize: action,
-      logout: action,
+			logout: action,
 		});
 
 		makePersistable(this, {
@@ -44,10 +44,10 @@ export class AuthStore {
 		this.userEmail = user.email;
 	}
 
-  logout() {
-    this.authorized = false;
+	logout() {
+		this.authorized = false;
 		this.accessToken = '';
 		this.userId = '';
 		this.userEmail = '';
-  }
+	}
 }

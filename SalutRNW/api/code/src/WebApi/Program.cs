@@ -20,7 +20,25 @@ using Serilog.Formatting.Json;
 using WebApi.Extensions;
 using WebApi.Middleware;
 
+var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: myAllowSpecificOrigins,
+        policy =>
+        {
+            policy.WithOrigins(
+                    "http://localhost:3000",
+                    "https://localhost:3000",
+                    "https://reacteverywheretest.fly.dev/",
+                    "https://reacteverywheredev.fly.dev/")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 
 var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
@@ -136,6 +154,8 @@ builder.Services.AddScoped(
     typeof(LoggingPipelineBehavior<,>));
 
 WebApplication app = builder.Build();
+
+app.UseCors(myAllowSpecificOrigins);
 
 app.AddGlobalErrorHandler();
 

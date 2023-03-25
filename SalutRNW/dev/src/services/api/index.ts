@@ -1,11 +1,10 @@
-import { IService } from '../../types';
+import { IService } from '../../types/index';
 import {AuthApi} from './auth';
 import {ContentApi} from './content';
 import {ProjectApi} from './project';
 
 export class ApiService implements IService {
   private inited = false;
-
   
   auth: AuthApi;
   content: ContentApi;
