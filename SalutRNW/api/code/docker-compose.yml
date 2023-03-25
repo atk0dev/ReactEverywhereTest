@@ -1,0 +1,56 @@
+version: '3.4'
+
+services:
+  webapi:
+    image: ${DOCKER_REGISTRY-}webapi
+    container_name: WebApi
+    build:
+      context: .
+      dockerfile: src/WebApi/Dockerfile
+    depends_on:
+      - reacteverywhereapi-db
+    networks:
+      - devnet
+
+  reacteverywhereapi-db:
+    image: postgres:latest
+    container_name: Database
+    environment:
+      - POSTGRES_DB=reacteverywhereapi
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/database:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    networks:
+      - devnet
+
+  reacteverywhereapi-mq:
+    image: rabbitmq:3.11.7-management
+    container_name: Queue
+    hostname: reacteverywhereapi-queue
+    volumes:
+        - ./.containers/queue/data/:/var/lib/rabbitmq
+        - ./.containers/queue/log/:/var/log/rabbitmq
+    environment:
+        RABBITMQ_DEFAULT_USER: guest
+        RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - devnet
+
+  seq:
+    container_name: SeqLog
+    image: datalust/seq:latest
+    ports:
+      - 8081:80
+      - 5341:5341
+    environment:      
+      - ACCEPT_EULA=Y 
+    networks:
+      - devnet
+
+networks:
+  devnet:
+    driver: bridge
+    name: devnet_network

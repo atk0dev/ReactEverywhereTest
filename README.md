@@ -52,6 +52,9 @@ cd SalutRNW/dev
 yarn start
 
 
+# ------- API -------
+API deployment instruction in the api readme
+
 ------------------------
 APK for Android
 

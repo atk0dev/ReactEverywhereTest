@@ -1,0 +1,395 @@
+{
+	"info": {
+		"_postman_id": "5ffe5f01-bdbf-49d9-b464-3ba346eef977",
+		"name": "ReactEverywhere",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4739683"
+	},
+	"item": [
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "secret-api-key",
+								"type": "text"
+							},
+							{
+								"key": "x-tenant",
+								"value": "reacteverywhere",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/products?owner=salut",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "owner",
+									"value": "salut"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "secret-api-key",
+								"type": "text"
+							},
+							{
+								"key": "x-tenant",
+								"value": "reacteverywhere",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/products/1?owner=salut",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products",
+								"1"
+							],
+							"query": [
+								{
+									"key": "owner",
+									"value": "salut"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get latest",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "secret-api-key",
+								"type": "text"
+							},
+							{
+								"key": "x-tenant",
+								"value": "reacteverywhere",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/products/latest?owner=salut",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products",
+								"latest"
+							],
+							"query": [
+								{
+									"key": "owner",
+									"value": "salut"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all defailt tenant",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "secret-api-key",
+								"type": "text"
+							},
+							{
+								"key": "x-tenant",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{url}}/products?owner=salut",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "owner",
+									"value": "salut"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get page",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "secret-api-key",
+								"type": "text"
+							},
+							{
+								"key": "x-tenant",
+								"value": "reacteverywhere",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/products?owner=salut&page=1&pageSize=11",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "owner",
+									"value": "salut"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "secret-api-key",
+								"type": "text"
+							},
+							{
+								"key": "x-tenant",
+								"value": "reacteverywhere",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"owner\": \"salut\",\r\n    \"name\": \"Demo1\",\r\n    \"description\": \"Demo project 1\",\r\n    \"components\": [\r\n        {\r\n            \"id\": \"11111\",\r\n            \"typeName\": \"Card\",\r\n            \"publicProps\": [\r\n                {\r\n                    \"name\": \"text\",\r\n                    \"type\": \"string\",\r\n                    \"value\": \"Hello\"\r\n                },\r\n                {\r\n                    \"name\": \"color\",\r\n                    \"type\": \"string\",\r\n                    \"value\": \"pink\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/products",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create default tenant",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "secret-api-key",
+								"type": "text"
+							},
+							{
+								"key": "x-tenant",
+								"value": "enconnect",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"owner\": \"salut\",\r\n    \"name\": \"Demo1\",\r\n    \"description\": \"Demo project 1\",\r\n    \"components\": [\r\n        {\r\n            \"id\": \"11111\",\r\n            \"typeName\": \"Card\",\r\n            \"publicProps\": [\r\n                {\r\n                    \"name\": \"text\",\r\n                    \"type\": \"string\",\r\n                    \"value\": \"Hello\"\r\n                },\r\n                {\r\n                    \"name\": \"color\",\r\n                    \"type\": \"string\",\r\n                    \"value\": \"pink\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/products",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get all from local docker",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "secret-api-key",
+						"type": "text"
+					},
+					{
+						"key": "x-tenant",
+						"value": "reacteverywhere",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/products?owner=salut",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "owner",
+							"value": "salut"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all from remote",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "secret-api-key",
+						"type": "text"
+					},
+					{
+						"key": "x-tenant",
+						"value": "reacteverywhere",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://reacteverywhereapi.fly.dev/products?owner=salut",
+					"protocol": "https",
+					"host": [
+						"reacteverywhereapi",
+						"fly",
+						"dev"
+					],
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "owner",
+							"value": "salut"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get config",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "secret-api-key",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/settings/config",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"settings",
+						"config"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://localhost:5001",
+			"type": "string"
+		}
+	]
+}
