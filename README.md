@@ -102,6 +102,41 @@ flyctl deploy
 
 open: https://reacteverywheretest.fly.dev
 
+-------------------------
+Build for dev
+
+cd /dev
+
+yarn build
+build output will be in /dev/build folder
+
+  serve -s build
+  browse: http://localhost:3000/
+
+
+---------
+Docker with devatk11
+docker image build -t devatk11/reacteverywheredev:v1 .
+docker image ls
+docker login
+docker image push devatk11/reacteverywheredev:v1
+docker run --publish 8080:80 devatk11/reacteverywheredev:v1
+
+go to: http://localhost:8080
+image here: https://hub.docker.com/repository/docker/devatk11/reacteverywheredev/general
+
+------------
+FlyIO
+atk0@outlook.com
+
+cd /dev
+flyctl deploy
+
+// fly deploy --dockerfile Dockerfile
+
+open: https://reacteverywheredev.fly.dev
+
+
 --------------
 Update published website with latest version of Android APK:
 1. Copy /app/android/app/build/outputs/apk/release/app-release.apk to /web/build/ 

@@ -1,9 +1,9 @@
-# fly.toml file generated for reacteverywheredev on 2023-03-17T11:43:58+01:00
+# fly.toml file generated for reacteverywheredev on 2023-03-25T12:20:16+01:00
 
 app = "reacteverywheredev"
 kill_signal = "SIGINT"
 kill_timeout = 5
-primary_region = "mad"
+#primary_region = "mad"
 processes = []
 
 [build]
