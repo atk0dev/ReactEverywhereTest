@@ -1,14 +1,19 @@
 import { observer } from 'mobx-react-lite';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, Image } from 'react-native';
 import { useServices } from '../services';
 import { RootStoreContext } from '../stores/RootStore';
 import { ContentResponse } from '../types/api';
 
-interface Props {}
+interface Props {
+	buttonGetContentVisible: boolean;
+	buttonHideContentVisible: boolean;
+	contentId?: string;
+}
 
-export const Content: React.FC<Props> = observer(() => {
-	const [cid, setCid] = useState('35d749e7-0779-4f5c-943a-e7dea1513270');
+export const Content: React.FC<Props> = observer(({ buttonGetContentVisible, buttonHideContentVisible, contentId }) => {
+	const [cid, setCid] = useState(contentId);
+
 	const [content, setContent] = useState<ContentResponse | null>();
 	const [loading, setLoading] = useState(false);
 
@@ -16,16 +21,21 @@ export const Content: React.FC<Props> = observer(() => {
 
 	const rootStore = React.useContext(RootStoreContext);
 
+	useEffect(() => {
+		handleGetContent();
+	}, [contentId]);
+
 	const handleGetContent = async () => {
 		setLoading(true);
 		try {
-			const c = await api.content.get(
-				cid,
-				rootStore.authStore.accessToken
-			);
-			setContent(c);
+			if (cid) {
+				const c = await api.content.get(
+					cid,
+					rootStore.authStore.accessToken
+				);
+				setContent(c);
+			}
 		} catch (e) {
-			// handle error
 			console.error('Error getting content:', e);
 			setContent(null);
 		} finally {
@@ -33,24 +43,42 @@ export const Content: React.FC<Props> = observer(() => {
 		}
 	};
 
+	const handleHideContent = async () => {
+		setContent(null);
+	};
+
 	return (
 		<View>
 			<Text>Content</Text>
 
-			<View style={styles.inputContainer}>
-				<TextInput
-					placeholder={'Content id'}
-					value={cid}
-					onChangeText={setCid}
-				/>
-			</View>
+			{buttonGetContentVisible &&
+				<View style={styles.inputContainer}>
+					<TextInput
+						placeholder={'Content id'}
+						value={cid}
+						onChangeText={setCid}
+					/>
+				</View>
+			}
 
-			<Button
-				title={loading ? 'Getting...' : 'Get content'}
-				onPress={() => {
-					handleGetContent();
-				}}
-			/>
+			<View style={styles.buttonsContainer}>
+				{buttonGetContentVisible &&
+					<Button
+						title={loading ? 'Getting...' : 'Get content'}
+						onPress={() => {
+							handleGetContent();
+						}}
+					/>
+				}
+				{buttonHideContentVisible &&
+					<Button
+						title={'Hide content'}
+						onPress={() => {
+							handleHideContent();
+						}}
+					/>
+				}
+			</View>
 
 			<View style={styles.contentContainer}>
 				{!!content && !!content.contentItems && (
@@ -67,31 +95,31 @@ export const Content: React.FC<Props> = observer(() => {
 								>
 									{item.contentType ===
 										'Heading' && (
-										<Text>
-											{
-												item.contents
-											}
-										</Text>
-									)}
+											<Text>
+												{
+													item.contents
+												}
+											</Text>
+										)}
 									{item.contentType ===
 										'Text' && (
-										<Text>
-											{
-												item.contents
-											}
-										</Text>
-									)}
+											<Text>
+												{
+													item.contents
+												}
+											</Text>
+										)}
 									{item.contentType ===
 										'Image' && (
-										<Image
-											style={
-												styles.image
-											}
-											source={{
-												uri: item.contents,
-											}}
-										/>
-									)}
+											<Image
+												style={
+													styles.image
+												}
+												source={{
+													uri: item.contents,
+												}}
+											/>
+										)}
 								</View>
 							)
 						)}
@@ -124,9 +152,14 @@ const styles = StyleSheet.create({
 		width: 300,
 		height: 300,
 	},
-  inputContainer: {
+	inputContainer: {
 		padding: 5,
 		margin: 5,
 		borderWidth: 1,
 	},
+	buttonsContainer: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-evenly'
+	}
 });

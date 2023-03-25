@@ -18,6 +18,7 @@ export const PropertiesList: React.FC<Props> = observer(({ control, onPropertyCh
 
 	React.useEffect(() => {		
 		setControlProps(rootStore.mainStore.canvasState.find(i => i.id === control?.id)?.publicProps);
+		setSelectedControl(rootStore.mainStore.canvasState.find(i => i.id === control?.id));
 	}, [control, rootStore.mainStore.canvasState]);
 
 	const propertyChanged = (propName: string, value: string) => {
@@ -37,7 +38,7 @@ export const PropertiesList: React.FC<Props> = observer(({ control, onPropertyCh
 	return (
 		<div style={styles.app}>
 			<div>
-				<div style={styles.propertiesCaption}>
+				<div>
 					<div>Properties list</div>
 				</div>
 				{control && (
@@ -50,12 +51,15 @@ export const PropertiesList: React.FC<Props> = observer(({ control, onPropertyCh
 
 						{controlProps?.map(
 							(key, val) => (
-								<div key={val}>
+								<div key={val} style={styles.propertyContainer}>
+									<div style={styles.propertyTitle}>
 									{
 										key.name
 									}
+									</div>
 
 									<input
+										style={styles.propertyInput}
 										type='text'
 										value={
 											key.value
@@ -81,6 +85,17 @@ const styles = StyleSheet.create({
 	app: {
 		backgroundColor: '#eaeaea',
 		width: '20%',
+		padding: 5,
 	},
-	propertiesCaption: {},
+	propertyContainer: {
+		backgroundColor: '#d6d6d6',
+		height: 50,
+		padding: 5,		
+	},
+	propertyTitle: {
+		textTransform: 'capitalize',
+	},
+	propertyInput: {
+		width: '95%'
+	}
 });

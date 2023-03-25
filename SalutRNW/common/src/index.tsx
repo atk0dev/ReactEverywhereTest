@@ -45,7 +45,10 @@ export const App = observer(() => {
 								styles.contentView
 							}
 						>
-							<Content />
+							<Content 
+								buttonGetContentVisible = {true}
+								buttonHideContentVisible = {true}
+							/>
 						</View>
 					)}
 					{/* <Card text='Test card' onButtonClick={(result) => {handleButtonClick(result)}}/> */}

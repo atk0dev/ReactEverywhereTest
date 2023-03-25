@@ -117,13 +117,13 @@ export const Dashboard: React.FC<Props> = observer(() => {
 	};
 
 	const publishComposition = () => {
-		console.log('Publish Composition', state[1]);
-		notify('Hello');
+		notify('Publish');
 	};
 
 	const newComposition = () => {
 		setState([getAvailableControls(), []]);
 		rootStore.mainStore.setCanvasStore([])
+		notify('New');
 	};
 
 	const notify = (message: string) => toast(message, {position: toast.POSITION.BOTTOM_RIGHT});
@@ -187,6 +187,7 @@ export const Dashboard: React.FC<Props> = observer(() => {
 
 	const propertyChangedResult = (result: PropertyChangedResult) => {
 		const newState = rootStore.mainStore.canvasState;
+		console.log('newState', [...newState]);
 		setState([[...state[0]], [...newState]]);
 	}
 
