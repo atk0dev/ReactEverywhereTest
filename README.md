@@ -174,3 +174,11 @@ docker image push devatk11/reacteverywheretest:v1
 
 6. publish web to fly
 flyctl deploy
+
+
+
+------------- APPLE ------------
+Apple
+bundle id: com.devatk11.SalutRnwApp
+React Native Web demo app
+SalutRnwApp
