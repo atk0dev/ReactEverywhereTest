@@ -1,5 +1,8 @@
 import { Card } from './salut-lib/dist/components/Card';
+import CatImage from './salut-lib/dist/components/CatImage';
 import { Counter } from './salut-lib/dist/components/Counter';
+import DevelopersNotNeeded from './salut-lib/dist/components/DevelopersNotNeeded';
+import Weather from './salut-lib/dist/components/Weather';
 import { Content } from './salut-lib/dist/screens/Content';
 import { Login } from './salut-lib/dist/screens/Login';
 import { UserInfo } from './salut-lib/dist/screens/UserInfo';
@@ -17,6 +20,9 @@ export const getAvailableControls = () => {
 			{ name: 'buttonHideContentVisible', type: 'boolean', value: 'true' },
 			{ name: 'contentId', type: 'string', value: '35d749e7-0779-4f5c-943a-e7dea1513270' }]
 	});
+  result.push({ id: '17', typeName: 'CatImage', publicProps: [] });
+  result.push({ id: '18', typeName: 'Weather', publicProps: [] });
+  result.push({ id: '19', typeName: 'DevelopersNotNeeded', publicProps: [] });
 	return result;
 };
 
@@ -36,6 +42,9 @@ export const getComponentFromToolbox = (itemTypeName: string, publicProps: Array
 			{itemTypeName === 'Counter' && <Counter />}
 
 			{itemTypeName === 'Login' && <Login />}
+      {itemTypeName === 'CatImage' && <CatImage />}
+      {itemTypeName === 'Weather' && <Weather />}
+      {itemTypeName === 'DevelopersNotNeeded' && <DevelopersNotNeeded />}
 
 			{itemTypeName === 'UserInfo' && <UserInfo />}
 

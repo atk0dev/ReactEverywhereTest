@@ -10,6 +10,9 @@ import { ComponentResponse, ProjectResponse } from './types/api';
 import { Card } from './components/Card';
 import { Login } from './screens/Login';
 import { UserInfo } from './screens/UserInfo';
+import CatImage from './components/CatImage';
+import DevelopersNotNeeded from './components/DevelopersNotNeeded';
+import Weather from './components/Weather';
 
 export const PageDynamic = observer(() => {
 	const rootStore = React.useContext(RootStoreContext);
@@ -64,6 +67,22 @@ export const PageDynamic = observer(() => {
 				return (
 					<Login />
 				);
+
+        case 'CatImage':
+				return (
+					<CatImage />
+				);
+
+        case 'DevelopersNotNeeded':
+				return (
+					<DevelopersNotNeeded />
+				);
+
+        case 'Weather':
+				return (
+					<Weather />
+				);
+
 
 			case 'UserInfo':
 				return (
